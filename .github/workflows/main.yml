@@ -5,12 +5,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PROJ_DIR: SuperMegaPalm
-  PROJ_NAME: UltraHyperHand
+  PROJ_DIR: FurMasseuse
+  PROJ_NAME: Fur Masseuse
   BUILD_NAME_PREFIX: Builds
   BUILD_DIR: build
   BUTLER_LINK: https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-  ITCH_GAME_NAME: doublebrackets/tetherwood
+  ITCH_GAME_NAME: doublebrackets/fur-masseuse
 
 on: 
   push:
