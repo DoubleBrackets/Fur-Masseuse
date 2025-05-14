@@ -8,7 +8,7 @@ namespace Input
 {
     public class SerialPortDropdown : MonoBehaviour
     {
-        private const string lastPortPrefs = "FurMasseuseLastSerialPort";
+        private const string lastPortPrefs = "LastSerialPortSelected";
 
         [SerializeField]
         private TMP_Dropdown dropdown;
