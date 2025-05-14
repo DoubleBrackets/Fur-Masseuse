@@ -19,9 +19,9 @@ on:
     paths:
     # Only build when these are changed by the push
     # Actions doesn't support env. variables in this section...
-      - 'SuperMegaPalm/Assets/**'
-      - 'SuperMegaPalm/Packages/**'
-      - 'SuperMegaPalm/ProjectSettings/**'
+      - 'FurMasseuse/Assets/**'
+      - 'FurMasseuse/Packages/**'
+      - 'FurMasseuse/ProjectSettings/**'
   workflow_dispatch:
       
 jobs:
