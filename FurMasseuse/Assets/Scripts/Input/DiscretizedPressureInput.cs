@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Input
 {
@@ -22,32 +23,61 @@ namespace Input
         [SerializeField]
         private bool log;
 
-        public UnityEvent<int> OnKnifeCut;
-        public List<UnityEvent> OnKnifeCutInterval;
+        [FormerlySerializedAs("OnKnifeCut")]
+        public UnityEvent<int> OnDiscreteTriggered;
+
+        [FormerlySerializedAs("OnKnifeCutInterval")]
+        public List<UnityEvent> OnDiscreteTriggeredInterval;
 
         [SerializeField]
         private InputState state;
+
+        [SerializeField]
+        private List<KeyCode> intervalKeyboardInputs;
+
+        public static DiscretizedPressureInput Instance { get; private set; }
 
         private int samples;
         private float maxSignalInSamples;
 
         private void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
             state = InputState.WaitingForInput;
         }
 
-        private void OnValidate()
+        private void Update()
         {
-            if (OnKnifeCutInterval.Count < signalRanges.Count - 1)
+            for (var i = 0; i < intervalKeyboardInputs.Count; i++)
             {
-                for (int i = OnKnifeCutInterval.Count; i < signalRanges.Count - 1; i++)
+                if (UnityEngine.Input.GetKeyDown(intervalKeyboardInputs[i]))
                 {
-                    OnKnifeCutInterval.Add(new UnityEvent());
+                    OnDiscreteTriggeredInterval[i].Invoke();
+                    OnDiscreteTriggered.Invoke(i);
                 }
             }
         }
 
-        public void Input(float normalizedSignal)
+        private void OnValidate()
+        {
+            if (OnDiscreteTriggeredInterval.Count < signalRanges.Count - 1)
+            {
+                for (int i = OnDiscreteTriggeredInterval.Count; i < signalRanges.Count - 1; i++)
+                {
+                    OnDiscreteTriggeredInterval.Add(new UnityEvent());
+                }
+            }
+        }
+
+        public void HandleSignal(float normalizedSignal)
         {
             if (state == InputState.WaitingForInput)
             {
@@ -96,8 +126,8 @@ namespace Input
                     if (maxSignalInSamples < intervalUpperBound)
                     {
                         int intervalIndex = i - 1;
-                        OnKnifeCut.Invoke(intervalIndex);
-                        OnKnifeCutInterval[intervalIndex].Invoke();
+                        OnDiscreteTriggered.Invoke(intervalIndex);
+                        OnDiscreteTriggeredInterval[intervalIndex].Invoke();
                         Debug.Log($"Knife cut detected in interval {intervalIndex}");
 
                         state = InputState.WaitingForReset;
