@@ -120,19 +120,15 @@ namespace Input
             {
                 state = InputState.WaitingForInput;
 
-                for (var i = 1; i < signalRanges.Count; i++)
-                {
-                    float intervalUpperBound = signalRanges[i];
-                    if (maxSignalInSamples < intervalUpperBound)
-                    {
-                        int intervalIndex = i - 1;
-                        OnDiscreteTriggered.Invoke(intervalIndex);
-                        OnDiscreteTriggeredInterval[intervalIndex].Invoke();
-                        Debug.Log($"Knife cut detected in interval {intervalIndex}");
+                int index = GetIntervalIndex(normalizedSignal);
 
-                        state = InputState.WaitingForReset;
-                        break;
-                    }
+                if (index != -1)
+                {
+                    OnDiscreteTriggered.Invoke(index);
+                    OnDiscreteTriggeredInterval[index].Invoke();
+                    Debug.Log($"Knife cut detected in interval {index}");
+
+                    state = InputState.WaitingForReset;
                 }
             }
             else
@@ -142,6 +138,20 @@ namespace Input
                     maxSignalInSamples = normalizedSignal;
                 }
             }
+        }
+
+        public int GetIntervalIndex(float signal)
+        {
+            for (var i = 1; i < signalRanges.Count; i++)
+            {
+                float intervalUpperBound = signalRanges[i];
+                if (signal < intervalUpperBound)
+                {
+                    return i - 1;
+                }
+            }
+
+            return -1;
         }
     }
 }

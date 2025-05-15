@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Input;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,15 +29,25 @@ namespace Gameplay
         [SerializeField]
         private float wrongPatternPenalty;
 
+        [SerializeField]
+        private float newPatternDelay;
+
+        [SerializeField]
+        private float gameOverDelay;
+
         [Header("Events")]
 
         public UnityEvent<List<MassageStrength>> OnPatternCreated;
 
+        public UnityEvent OnNewCharacterSpawned;
+
         public UnityEvent<int> OnStepCompleted;
+        public UnityEvent OnFailStep;
 
         public UnityEvent<float> OnGameplayTimerUpdated;
 
         public UnityEvent OnGameplayTimerExpired;
+        public UnityEvent OnMoveToResults;
 
         public UnityEvent<int> OnScoreUpdated;
 
@@ -62,14 +73,7 @@ namespace Gameplay
             {
                 gameplayTimer -= Time.deltaTime;
                 OnGameplayTimerUpdated?.Invoke(gameplayTimer);
-            }
-            else
-            {
-                Debug.Log("Time Over!");
-
-                gameplayTimer = 0;
-                OnGameplayTimerUpdated?.Invoke(gameplayTimer);
-                OnGameplayTimerExpired?.Invoke();
+                CheckForEnd();
             }
         }
 
@@ -78,14 +82,39 @@ namespace Gameplay
             DiscretizedPressureInput.Instance.OnDiscreteTriggered.RemoveListener(HandleDiscreteInput);
         }
 
+        private void CheckForEnd()
+        {
+            if (gameplayTimer <= 0f)
+            {
+                Debug.Log("Time Over!");
+
+                gameplayTimer = 0;
+                OnGameplayTimerUpdated?.Invoke(gameplayTimer);
+                OnGameplayTimerExpired?.Invoke();
+                MoveToResults().Forget();
+            }
+        }
+
+        private async UniTaskVoid MoveToResults()
+        {
+            await UniTask.Delay((int)(gameOverDelay * 1000));
+            OnMoveToResults?.Invoke();
+        }
+
         private void HandleDiscreteInput(int intervalIndex)
         {
+            if (gameplayTimer <= 0)
+            {
+                return;
+            }
+
             var input = (MassageStrength)intervalIndex;
             HandlePatternInput(input);
         }
 
         public List<MassageStrength> CreateNewPattern()
         {
+            OnNewCharacterSpawned?.Invoke();
             currentPattern = new List<MassageStrength>();
             for (var i = 0; i < patternLength; i++)
             {
@@ -99,7 +128,7 @@ namespace Gameplay
             return currentPattern;
         }
 
-        public void HandlePatternInput(MassageStrength input)
+        public async UniTaskVoid HandlePatternInput(MassageStrength input)
         {
             if (input == currentPattern[currentPatternIndex])
             {
@@ -111,6 +140,7 @@ namespace Gameplay
                     // Pattern completed
                     SetScore(score + 1);
                     OnScoreUpdated?.Invoke(score);
+                    await UniTask.Delay((int)(newPatternDelay * 1000));
                     CreateNewPattern();
                 }
             }
@@ -118,6 +148,8 @@ namespace Gameplay
             {
                 Debug.Log($"Input failed! Expected: {currentPattern[currentPatternIndex]}, Got: {input}");
                 gameplayTimer -= wrongPatternPenalty;
+                CheckForEnd();
+                OnFailStep?.Invoke();
             }
         }
 

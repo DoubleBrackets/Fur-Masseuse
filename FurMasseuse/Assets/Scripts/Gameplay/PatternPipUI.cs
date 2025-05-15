@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -18,11 +19,23 @@ namespace Gameplay
         [SerializeField]
         private Image pipImage;
 
+        [SerializeField]
+        private List<Sprite> typeSprites;
+
         [Header("Events")]
 
         public UnityEvent OnFinished;
 
         public UnityEvent OnUnfinished;
+
+        public UnityEvent OnHide;
+
+        public UnityEvent OnShow;
+
+        [Header("Config")]
+
+        [SerializeField]
+        private Vector2 rotationRange;
 
         private State currentState = State.Unititialized;
 
@@ -56,15 +69,28 @@ namespace Gameplay
             switch (strength)
             {
                 case MainGameplay.MassageStrength.Low:
-                    pipImage.color = Color.green;
+                    pipImage.sprite = typeSprites[0];
                     break;
                 case MainGameplay.MassageStrength.Medium:
-                    pipImage.color = Color.yellow;
+                    pipImage.sprite = typeSprites[1];
                     break;
                 case MainGameplay.MassageStrength.High:
-                    pipImage.color = Color.red;
+                    pipImage.sprite = typeSprites[2];
                     break;
             }
+        }
+
+        public void Hide()
+        {
+            OnHide?.Invoke();
+        }
+
+        public void Show()
+        {
+            // Randomize rotation
+            float randomRotation = Random.Range(-rotationRange.x, rotationRange.x);
+            transform.rotation = Quaternion.Euler(0, 0, randomRotation);
+            OnShow?.Invoke();
         }
     }
 }

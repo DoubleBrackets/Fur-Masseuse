@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Gameplay
@@ -13,6 +14,9 @@ namespace Gameplay
 
         [SerializeField]
         private Transform patternPipParent;
+
+        [SerializeField]
+        private float pipSpawnDelay;
 
         private readonly List<PatternPipUI> patternPips = new();
 
@@ -45,6 +49,11 @@ namespace Gameplay
 
         private void HandlePatternCreated(List<MainGameplay.MassageStrength> patterns)
         {
+            HandlePatternCreatedAsync(patterns).Forget();
+        }
+
+        private async UniTaskVoid HandlePatternCreatedAsync(List<MainGameplay.MassageStrength> patterns)
+        {
             if (patterns.Count > patternPips.Count)
             {
                 for (int i = patternPips.Count; i < patterns.Count; i++)
@@ -55,10 +64,17 @@ namespace Gameplay
                 }
             }
 
+            foreach (PatternPipUI pip in patternPips)
+            {
+                pip.Hide();
+            }
+
             for (var i = 0; i < patternPips.Count; i++)
             {
                 patternPips[i].SetType(patterns[i]);
                 patternPips[i].SetState(PatternPipUI.State.Unfinished);
+                patternPips[i].Show();
+                await UniTask.Delay((int)(pipSpawnDelay * 1000));
             }
         }
     }
