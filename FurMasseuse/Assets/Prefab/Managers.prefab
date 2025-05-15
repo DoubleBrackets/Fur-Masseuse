@@ -107,8 +107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   signalRanges:
   - 0.05
-  - 0.25
-  - 0.65
+  - 0.3
+  - 0.7
   - 1.1
   samplingSize: 4
   log: 1
