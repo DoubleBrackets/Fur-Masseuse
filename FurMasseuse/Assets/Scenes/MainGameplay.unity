@@ -5791,7 +5791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patternLength: 4
-  gameplayTime: 30
+  gameplayTime: 60
   wrongPatternPenalty: 0
   newPatternDelay: 0.5
   gameOverDelay: 2.25
