@@ -57,7 +57,7 @@ Material:
     - _NoiseScale: 1
     - _OffsetAmount: 1
     - _WobbleAmount: 0.05
-    - _WobbleInterval: 0.5
+    - _WobbleInterval: 0.4
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

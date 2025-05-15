@@ -51,7 +51,7 @@ Material:
     - _Strength: 0.1
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
-    - _WobbleInterval: 0.5
+    - _WobbleInterval: 0.4
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

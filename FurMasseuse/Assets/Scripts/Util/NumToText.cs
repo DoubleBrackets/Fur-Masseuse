@@ -15,7 +15,7 @@ namespace Util
 
         public void SetText(float number)
         {
-            text.text = number.ToString("F2");
+            text.text = number.ToString("F0");
         }
     }
 }
