@@ -16,6 +16,8 @@ namespace Gameplay
 
         private PawCharacter currentPawCharacter;
 
+        private int previousCharIndex;
+
         public void BringInNewCharacter()
         {
             if (currentPawCharacter != null)
@@ -34,6 +36,14 @@ namespace Gameplay
             }
 
             int randomIndex = Random.Range(0, pawCharacterPrefabs.Count);
+
+            while (randomIndex == previousCharIndex)
+            {
+                randomIndex = Random.Range(0, pawCharacterPrefabs.Count);
+            }
+
+            previousCharIndex = randomIndex;
+
             currentPawCharacter =
                 Instantiate(pawCharacterPrefabs[randomIndex], spawnPoint);
 

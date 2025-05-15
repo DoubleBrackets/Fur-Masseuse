@@ -61,12 +61,14 @@ namespace Gameplay
                     PatternPipUI pip = Instantiate(patternPipPrefab, patternPipParent);
                     patternPips.Add(pip);
                     pip.Initialize();
+                    pip.Hide();
                 }
             }
 
             foreach (PatternPipUI pip in patternPips)
             {
                 pip.Hide();
+                await UniTask.Delay((int)(pipSpawnDelay * 1000));
             }
 
             for (var i = 0; i < patternPips.Count; i++)
