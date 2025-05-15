@@ -196,7 +196,7 @@ MonoBehaviour:
   patternPipPrefab: {fileID: 4184790700067504522, guid: e3593a75438007a4b9af61d769318efc, type: 3}
   mainGameplay: {fileID: 1262692691}
   patternPipParent: {fileID: 1228636200}
-  pipSpawnDelay: 0
+  pipSpawnDelay: 0.04
 --- !u!4 &270990846
 Transform:
   m_ObjectHideFlags: 0
