@@ -28,6 +28,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cat
       objectReference: {fileID: 0}
+    - target: {fileID: 7643370732508173869, guid: 5162f3770d4fc72439aef255a6b6fd56, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 753694c5b13b0cf40a614ae8925055dd, type: 3}
+    - target: {fileID: 7643370732508173869, guid: 5162f3770d4fc72439aef255a6b6fd56, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 753694c5b13b0cf40a614ae8925055dd, type: 3}
     - target: {fileID: 8111744716271044806, guid: 5162f3770d4fc72439aef255a6b6fd56, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -68,6 +76,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8165468000097433547, guid: 5162f3770d4fc72439aef255a6b6fd56, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: c9a24924c750cb14aadaf684cfcd12dd, type: 3}
+    - target: {fileID: 8165468000097433547, guid: 5162f3770d4fc72439aef255a6b6fd56, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c9a24924c750cb14aadaf684cfcd12dd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
