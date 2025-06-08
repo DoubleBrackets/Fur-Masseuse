@@ -76,7 +76,7 @@ namespace Input
             }
 
             // Use the highest signal as the accepted value
-            float highestSignal = signalQueue.Average();
+            float highestSignal = signalQueue.Max();
             float normalizedSignal = Mathf.InverseLerp(intensityRange.x, intensityRange.y, highestSignal);
             float mappedSignal = intensityMapCurve.Evaluate(normalizedSignal);
 
